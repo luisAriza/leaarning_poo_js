@@ -1,3 +1,17 @@
+class Comment {
+  constructor({ content, studentName, studentRole = "estudiante" }) {
+    this.content = content;
+    this.studentName = studentName;
+    this.studentRole = studentRole;
+    this.likes = 0;
+  }
+  publicar() {
+    console.log(this.studentName + " (" + this.studentRole + ") ");
+    console.log(this.likes + " likes");
+    console.log(this.content);
+  }
+}
+
 class Student {
   constructor({
     name,
@@ -19,6 +33,65 @@ class Student {
     };
     this.approvedCourses = approvedCourses;
     this.learningPaths = learningPaths;
+  }
+  publicarComentario(commentContent) {
+    const comment = new Comment({
+      content: commentContent,
+      studentName: this.name,
+    });
+    comment.publicar();
+  }
+}
+class FreeStudent extends Student {
+  constructor(props) {
+    super(props);
+  }
+  approveCourse(newCourse) {
+    if (newCourse.isFree) {
+      this.approvedCourses.push(newCourse);
+    } else {
+      console.warn(
+        "Lo siento " + this.name + ", solo puedes tomar cursos abiertos."
+      );
+    }
+  }
+}
+class BasicStudent extends Student {
+  constructor(props) {
+    super(props);
+  }
+  approveCourse(newCourse) {
+    if (newCourse.lang !== "english") {
+      this.approvedCourses.push(newCourse);
+    } else {
+      console.warn(
+        "Lo siento " + this.name + ", no puedes tomar cursos en Ingles."
+      );
+    }
+  }
+}
+class ExpertStudent extends Student {
+  constructor(props) {
+    super(props);
+  }
+  approveCourse(newCourse) {
+    this.approvedCourses.push(newCourse);
+  }
+}
+class TeacherStudent extends Student {
+  constructor(props) {
+    super(props);
+  }
+  approveCourse(newCourse) {
+    this.approvedCourses.push(newCourse);
+  }
+  publicarComentario(commentContent) {
+    const comment = new Comment({
+      content: commentContent,
+      studentName: this.name,
+      studentRole: "profesor",
+    });
+    comment.publicar();
   }
 }
 
@@ -46,9 +119,11 @@ class PlatziCLass {
 }
 
 class Course {
-  constructor({ name, classes = [] }) {
+  constructor({ name, classes = [], isFree = false, lang = "spanish" }) {
     this._name = name;
     this.classes = classes;
+    this.isFree = isFree;
+    this.lang = lang;
   }
 
   get name() {
@@ -77,6 +152,7 @@ const class23 = new PlatziCLass({
 
 const cursoProgBasica = new Course({
   name: "Curso Gratis de Programación Básica",
+  isFree: true,
 });
 
 const cursoCompBasica = new Course({
@@ -85,6 +161,7 @@ const cursoCompBasica = new Course({
 
 const cursoIngBasico = new Course({
   name: "Inglés básico",
+  lang: "english",
 });
 
 const desarrolloWeb = new LearningPaths({
@@ -105,7 +182,7 @@ const englishAcademy = new LearningPaths({
   ],
 });
 
-const juan2 = new Student({
+const juan = new FreeStudent({
   name: "Juancho",
   userName: "chojuan",
   email: "juan.098@gmail.com",
@@ -113,10 +190,17 @@ const juan2 = new Student({
   learningPaths: englishAcademy,
 });
 
-const manuel = new Student({
+const manuel = new BasicStudent({
   name: "Manuel",
   userName: "mane",
   email: "manuelito@gmail.com",
   twitter: "mansito_53",
   learningPaths: desarrolloWeb,
+});
+
+const freddy = new TeacherStudent({
+  name: "Freddy",
+  userName: "freddier",
+  email: "freddier@gmail.com",
+  facebook: "fred13",
 });
