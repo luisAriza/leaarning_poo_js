@@ -34,3 +34,20 @@ function deepCopy(subject) {
 
   return copySubject;
 }
+
+const studentBase = {
+  name: undefined,
+  email: undefined,
+  age: undefined,
+  approvedCourses: undefined,
+  learningPaths: undefined,
+  socialMedia: {
+    twitter: undefined,
+    instagram: undefined,
+    facebook: undefined,
+  },
+};
+
+const luis = deepCopy(studentBase);
+Object.seal(luis);
+Object.isFrozen(luis);
