@@ -35,19 +35,6 @@ function deepCopy(subject) {
   return copySubject;
 }
 
-// const studentBase = {
-//   name: undefined,
-//   email: undefined,
-//   age: undefined,
-//   approvedCourses: undefined,
-//   learningPaths: undefined,
-//   socialMedia: {
-//     twitter: undefined,
-//     instagram: undefined,
-//     facebook: undefined,
-//   },
-// };
-
 function requireParam(param) {
   throw new Error(param + " es obligatorio");
 }
@@ -75,22 +62,18 @@ function createStudent({
     },
     approvedCourses,
     learningPaths,
-    readName() {
+
+    get name() {
       return private["_name"];
     },
-    changeName(newName) {
-      private["_name"] = newName;
+    set name(newName) {
+      if (newName.length != 0) {
+        private["_name"] = newName;
+      } else {
+        console.warn("Tu nombre debe tener al menos 1 carácter");
+      }
     },
   };
-
-  Object.defineProperty(public, "readName", {
-    configurable: false,
-    writable: false,
-  });
-  Object.defineProperty(public, "changeName", {
-    configurable: false,
-    writable: false,
-  });
 
   return public;
 }
