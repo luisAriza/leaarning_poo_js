@@ -35,19 +35,50 @@ function deepCopy(subject) {
   return copySubject;
 }
 
-const studentBase = {
-  name: undefined,
-  email: undefined,
-  age: undefined,
-  approvedCourses: undefined,
-  learningPaths: undefined,
-  socialMedia: {
-    twitter: undefined,
-    instagram: undefined,
-    facebook: undefined,
-  },
-};
+// const studentBase = {
+//   name: undefined,
+//   email: undefined,
+//   age: undefined,
+//   approvedCourses: undefined,
+//   learningPaths: undefined,
+//   socialMedia: {
+//     twitter: undefined,
+//     instagram: undefined,
+//     facebook: undefined,
+//   },
+// };
 
-const luis = deepCopy(studentBase);
-Object.seal(luis);
-Object.isFrozen(luis);
+function requireParam(param) {
+  throw new Error(param + " es obligatorio");
+}
+
+function createStudent({
+  name = requireParam("name"),
+  age = requireParam("age"),
+  email = requireParam("email"),
+  twitter,
+  instagram,
+  facebook,
+  approvedCourses = [],
+  learningPaths = [],
+} = {}) {
+  return {
+    name,
+    age,
+    email,
+    socialMedia: {
+      twitter,
+      instagram,
+      facebook,
+    },
+    approvedCourses,
+    learningPaths,
+  };
+}
+
+const luis = createStudent({
+  name: "Luis",
+  age: 22,
+  email: "Luisito@gmail.com",
+  twitter: "Lm_Ap",
+});
